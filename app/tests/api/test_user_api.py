@@ -31,7 +31,7 @@ class TestUserCreateAPI:
         response = client.post("/users/", json=data)
 
         # THen
-        assert response.status_code == 421
+        assert response.status_code == 422
 
     def test_create_user_invalid_email(self, client):
         # Given
