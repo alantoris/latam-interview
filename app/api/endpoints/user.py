@@ -1,9 +1,12 @@
-from typing import List
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from typing import List
+
 from app.db import get_db
 from app.schemas.user import UserOut, UserCreate
 from app.services import user as service_user
+from app.services.exceptions import DuplicateUserError
+
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -31,7 +34,13 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)) -> UserOut:
         user (UserCreate): New user data.
         db (Session): Database session.
 
+    Raises:
+        HTTPException: If there is any error in user creation.
+
     Returns:
         UserOut: User created with all fields.
     """
-    return service_user.create_user(db, user)
+    try:
+        return service_user.create_user(db, user)
+    except DuplicateUserError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))

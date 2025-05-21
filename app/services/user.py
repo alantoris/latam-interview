@@ -1,9 +1,9 @@
 from typing import List
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from fastapi import HTTPException, status
 from app.models.user import User
 from app.schemas.user import UserCreate
+from app.services.exceptions import DuplicateUserError
 
 
 def get_users(db: Session) -> List[User]:
@@ -28,7 +28,7 @@ def create_user(db: Session, user_in: UserCreate) -> User:
         user_in (UserCreate): New user data.
 
     Raises:
-        HTTPException: If the username or email address is already registered.
+        DuplicateUserError: If the username or email address is already registered.
 
     Returns:
         User: Newly created User object.
@@ -41,7 +41,4 @@ def create_user(db: Session, user_in: UserCreate) -> User:
         return user
     except IntegrityError:
         db.rollback()
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Username or email already exists",
-        )
+        raise DuplicateUserError("Username or email already exists")

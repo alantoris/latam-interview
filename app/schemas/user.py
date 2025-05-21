@@ -1,6 +1,8 @@
+from datetime import datetime
 from pydantic import BaseModel, EmailStr, constr
 from uuid import UUID
-from datetime import datetime
+
+from app.models.user import UserRole
 
 
 class UserBase(BaseModel):
@@ -13,7 +15,7 @@ class UserBase(BaseModel):
     email: EmailStr
     first_name: constr(strip_whitespace=True, min_length=1, max_length=50)
     last_name: constr(strip_whitespace=True, min_length=1, max_length=50)
-    role: constr(strip_whitespace=True, min_length=2, max_length=20)
+    role: UserRole
 
 
 class UserCreate(UserBase):
