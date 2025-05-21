@@ -1,12 +1,17 @@
+import enum
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import String, DateTime, Boolean
+from sqlalchemy import String, DateTime, Boolean, Enum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import mapped_column, Mapped
-from sqlalchemy.ext.declarative import declarative_base
+from app.db import Base
 
-Base = declarative_base()
+
+class UserRole(str, enum.Enum):
+    ADMIN = "admin"
+    USER = "user"
+    GUEST = "guest"
 
 
 class User(Base):
@@ -44,8 +49,10 @@ class User(Base):
     )
     first_name: Mapped[str] = mapped_column(String(50), nullable=False)
     last_name: Mapped[str] = mapped_column(String(50), nullable=False)
-    role: Mapped[str] = mapped_column(
-        String(20), nullable=False, doc="Role of the user (e.g., admin, user, guest)"
+    role: Mapped[UserRole] = mapped_column(
+        Enum(UserRole, name="userrole_enum"),
+        nullable=False,
+        doc="Role of the user (e.g., admin, user, guest)",
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
