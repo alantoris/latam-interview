@@ -1,3 +1,6 @@
+import uuid
+
+
 class TestUserCreateAPI:
     def test_create_user_endpoint(self, client):
         # Given
@@ -119,3 +122,135 @@ class TestUserListAPI:
         assert response.status_code == 200
         data = response.json()
         assert len(data) == 5
+
+
+class TestUserRetrieveAPI:
+    def test_retrieve_existing_user(self, client, user):
+        # Given and When
+        response = client.get(f"/users/{user.id}")
+
+        # Then
+        assert response.status_code == 200
+        data = response.json()
+        assert data["username"] == user.username
+        assert data["email"] == user.email
+
+    def test_retrieve_non_existing_user(self, client):
+        # Given and When
+        response = client.get(f"/users/{uuid.uuid4()}")
+
+        # Then
+        assert response.status_code == 404
+
+
+class TestUserUpdateAPI:
+    def test_update_user_success(self, client, user):
+        # Given
+        data = {
+            "username": "updated_username",
+            "email": "updated@example.com",
+            "first_name": "Updated",
+            "last_name": "User",
+            "role": "admin",
+        }
+
+        # When
+        response = client.put(f"/users/{user.id}", json=data)
+
+        # Then
+        assert response.status_code == 200
+        updated = response.json()
+        assert updated["username"] == "updated_username"
+        assert updated["email"] == "updated@example.com"
+
+    def test_update_user_missing_fields(self, client, user):
+        # Given
+        data = {"first_name": "OnlyFirstName"}
+
+        # When
+        response = client.put(f"/users/{user.id}", json=data)
+
+        # Then
+        assert response.status_code == 422
+
+    def test_update_user_invalid_email(self, client, user):
+        # Given
+        data = {
+            "username": "u",
+            "email": "invalid-email",
+            "first_name": "Name",
+            "last_name": "Last",
+            "role": "user",
+        }
+
+        # When
+        response = client.put(f"/users/{user.id}", json=data)
+
+        # Then
+        assert response.status_code == 422
+
+    def test_update_user_not_found(self, client):
+        # Given
+        data = {
+            "username": "updated_username",
+            "email": "e@example.com",
+            "first_name": "N",
+            "last_name": "L",
+            "role": "user",
+        }
+
+        # When
+        response = client.put(f"/users/{uuid.uuid4()}", json=data)
+
+        # Then
+        assert response.status_code == 404
+
+
+class TestUserPartialUpdateAPI:
+    def test_partial_update_user_success(self, client, user):
+        # Given
+        data = {"first_name": "PatchedName"}
+
+        # When
+        response = client.patch(f"/users/{user.id}", json=data)
+
+        # Then
+        assert response.status_code == 200
+        assert response.json()["first_name"] == "PatchedName"
+
+    def test_partial_update_user_invalid_email(self, client, user):
+        # Given
+        data = {"email": "invalid"}
+
+        # When
+        response = client.patch(f"/users/{user.id}", json=data)
+
+        # Then
+        assert response.status_code == 422
+
+    def test_partial_update_user_not_found(self, client):
+        # Given and when
+        response = client.patch(f"/users/{uuid.uuid4()}", json={"first_name": "X"})
+
+        # Then
+        assert response.status_code == 404
+
+
+class TestUserDeleteAPI:
+    def test_delete_user_success(self, client, user):
+        # When
+        response = client.delete(f"/users/{user.id}")
+
+        # Then
+        assert response.status_code == 204
+
+        # Try to get user again
+        get_response = client.get(f"/users/{user.id}")
+        assert get_response.status_code == 404
+
+    def test_delete_user_not_found(self, client):
+        # Given and when
+        response = client.delete(f"/users/{uuid.uuid4()}")
+
+        # Then
+        assert response.status_code == 404
