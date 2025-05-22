@@ -86,3 +86,50 @@ jsonCopiar{
 ```
 
 NOTE: We recommend sending the challenge even if you didn't manage to finish all the parts.
+
+
+
+## DEV DOCUMENTATION
+
+
+To deploy the API locally, you must have Docker and Docker Compose installed. If you don't, you can follow the instructions at https://docs.docker.com/compose/install/
+
+Then build the image.
+
+```
+docker-compose build
+```
+
+Then use the following command to make it available locally.
+
+```
+docker-compose up
+```
+
+Our REST API for user management is available under the `/users` endpoint. The supported operations are as follows:
+
+- **GET** `/users/`
+  Retrieves the full list of users.
+
+- **GET** `/users/{uuid}/`
+  Retrieves a specific user by their UUID.
+
+- **POST** `/users/`
+  Creates a new user by sending the required data in the request body.
+
+- **PUT** `/users/{uuid}/`
+  Fully updates an existing user, replacing all fields.
+
+- **PATCH** `/users/{uuid}/`
+  Partially updates an existing user, modifying only the provided fields.
+
+- **DELETE** `/users/{uuid}/`
+  Deletes a specific user.
+
+We can find within the postman folder, at the root of the project, a series of examples to be able to use this API against our localhost.
+
+For a more detailed description of endpoints, parameters, request and response formats, please refer to the full documentation at:
+
+```
+/docs
+```
