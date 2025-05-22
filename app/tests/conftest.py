@@ -53,7 +53,7 @@ def client(override_get_db):
 @pytest.fixture
 def user(db):
     UserFactory._meta.sqlalchemy_session = db
-    return UserFactory()
+    return UserFactory(username="username")
 
 
 @pytest.fixture

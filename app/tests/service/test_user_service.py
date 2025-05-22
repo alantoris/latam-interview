@@ -1,7 +1,9 @@
-from pydantic import ValidationError
 import pytest
-from fastapi import HTTPException
-from app.schemas.user import UserCreate
+import uuid
+from sqlalchemy.exc import NoResultFound
+from pydantic import ValidationError
+
+from app.schemas.user import UserCreate, UserUpdate, UserPartialUpdate
 from app.services import user as service_user
 from app.services.exceptions import DuplicateUserError
 
@@ -100,3 +102,77 @@ class TestUserListService:
 
         # Then
         assert len(users) == 5
+
+
+class TestUserRetrieveService:
+    def test_get_user_by_id_success(self, db, user):
+        # Given and when
+        fetched = service_user.get_user_by_id(db, user.id)
+
+        # Then
+        assert fetched.id == user.id
+        assert fetched.username == "username"
+
+    def test_get_user_by_id_not_found(self, db):
+        # Given when and then
+        with pytest.raises(NoResultFound):
+            service_user.get_user_by_id(db, uuid.uuid4())
+
+
+class TestUserUpdateService:
+    def test_update_user_put(self, db, user):
+        # Given
+        update_data = UserUpdate(
+            username="after",
+            email="after@example.com",
+            first_name="New",
+            last_name="Name",
+            role="admin",
+        )
+
+        # When
+        updated = service_user.update_user(db, user.id, update_data)
+
+        # Then
+        assert updated.username == "after"
+        assert updated.email == "after@example.com"
+        assert updated.role == "admin"
+
+    def test_update_user_patch(self, db, user):
+        # Given
+        update_data = UserPartialUpdate(first_name="Updated")
+
+        # When
+        updated = service_user.update_user(db, user.id, update_data)
+
+        # Then
+        assert updated.username == "username"
+        assert updated.first_name == "Updated"
+
+    def test_update_user_not_found(self, db):
+        # Given and when
+        update_data = UserPartialUpdate(first_name="NewName")
+
+        # Then
+        with pytest.raises(NoResultFound):
+            service_user.update_user(db, uuid.uuid4(), update_data)
+
+    def test_update_user_missing_fields(self, db):
+        # Given when and then
+        with pytest.raises(ValidationError):
+            UserUpdate(first_name="NewName")
+
+
+class TestUserDeleteService:
+    def test_delete_user_success(self, db, user):
+        # Given and when
+        service_user.delete_user(db, user.id)
+
+        # THen
+        with pytest.raises(NoResultFound):
+            service_user.get_user_by_id(db, user.id)
+
+    def test_delete_user_not_found(self, db):
+        # Given when and then
+        with pytest.raises(NoResultFound):
+            service_user.delete_user(db, uuid.uuid4())
