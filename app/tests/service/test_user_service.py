@@ -2,6 +2,7 @@ import pytest
 import uuid
 from sqlalchemy.exc import NoResultFound
 from pydantic import ValidationError
+from fastapi_pagination import Params, Page
 
 from app.schemas.user import UserCreate, UserUpdate, UserPartialUpdate
 from app.services import user as service_user
@@ -90,18 +91,28 @@ class TestUserCreateService:
 
 class TestUserListService:
     def test_list_users_empty(self, db):
-        # Given and When
-        users = service_user.get_users(db)
+        # Given
+        params = Params(page=1, size=10)
+
+        # When
+        users_page = service_user.get_users(db, params)
 
         # Then
-        assert len(users) == 0
+        assert isinstance(users_page, Page)
+        assert users_page.total == 0
+        assert len(users_page.items) == 0
 
     def test_list_users_with_data(self, db, multiple_users):
-        # Given and When
-        users = service_user.get_users(db)
+        # Given
+        params = Params(page=1, size=10)
+
+        # When
+        users_page = service_user.get_users(db, params)
 
         # Then
-        assert len(users) == 5
+        assert isinstance(users_page, Page)
+        assert users_page.total == 5
+        assert len(users_page.items) == 5
 
 
 class TestUserRetrieveService:
