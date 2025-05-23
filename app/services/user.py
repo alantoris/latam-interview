@@ -1,5 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError, NoResultFound
+from fastapi_pagination.ext.sqlalchemy import paginate
+from fastapi_pagination import Page, Params
 from typing import List
 from uuid import UUID
 
@@ -28,7 +30,7 @@ def get_user_by_id(db: Session, user_id: UUID) -> User:
     return user
 
 
-def get_users(db: Session) -> List[User]:
+def get_users(db: Session, params: Params) -> Page[User]:
     """
     Retrieves all existing users in the database.
 
@@ -36,9 +38,9 @@ def get_users(db: Session) -> List[User]:
         db (Session): Database session.
 
     Returns:
-        List[User]: List of User objects.
+        Page[User]: Page of User objects.
     """
-    return db.query(User).all()
+    return paginate(db.query(User), params)
 
 
 def create_user(db: Session, user_in: UserCreate) -> User:

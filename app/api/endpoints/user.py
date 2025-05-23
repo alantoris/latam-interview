@@ -4,6 +4,7 @@ from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import Session
 from uuid import UUID
 from typing import List
+from fastapi_pagination import Page, Params
 
 from app.db import get_db
 from app.schemas.user import UserOut, UserCreate, UserUpdate, UserPartialUpdate
@@ -37,8 +38,10 @@ def retrieve_user(user_id: UUID, db: Session = Depends(get_db)) -> UserOut:
         raise HTTPException(status_code=404, detail="User not found")
 
 
-@router.get("/", response_model=list[UserOut])
-def list_users(db: Session = Depends(get_db)) -> List[UserOut]:
+@router.get("/", response_model=Page[UserOut])
+def list_users(
+    db: Session = Depends(get_db), params: Params = Depends()
+) -> Page[UserOut]:
     """
     Retrieves a list of all users.
 
@@ -46,10 +49,10 @@ def list_users(db: Session = Depends(get_db)) -> List[UserOut]:
         db (Session): Database session provided by FastAPI (with Depends).
 
     Returns:
-        List[UserOut]: List of users formatted with the output schema.
+        Page[UserOut]: List of users paginated formatted with the output schema.
     """
     logger.info("Listing all users")
-    return service_user.get_users(db)
+    return service_user.get_users(db, params)
 
 
 @router.post("/", response_model=UserOut, status_code=status.HTTP_201_CREATED)
