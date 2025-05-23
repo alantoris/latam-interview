@@ -2,8 +2,10 @@ from fastapi import FastAPI
 from app.db.database import Base, engine
 from app.models import User
 from dotenv import load_dotenv
+from app.logging import setup_logging
 
 load_dotenv()
+setup_logging()
 
 from app.api.endpoints.user import router as user_router
 
