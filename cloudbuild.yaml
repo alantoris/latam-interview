@@ -4,9 +4,10 @@ steps:
 
   - name: 'gcr.io/cloud-builders/docker'
     args: [
-      'run', '--rm',
-      'gcr.io/$PROJECT_ID/fastapi-app',
-      'pytest'
+      'run',
+      '--rm',
+      '--entrypoint=pytest',
+      'gcr.io/$PROJECT_ID/fastapi-app'
     ]
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
