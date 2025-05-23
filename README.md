@@ -133,5 +133,5 @@ We just need to define an environment variable inside postman called HOST with t
 For a more detailed description of endpoints, parameters, request and response formats, please refer to the full documentation at:
 
 ```
-/docs
+https://swe-test-alantoris-317986988721.southamerica-east1.run.app/docs
 ```
