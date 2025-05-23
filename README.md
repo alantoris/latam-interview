@@ -91,6 +91,7 @@ NOTE: We recommend sending the challenge even if you didn't manage to finish all
 
 ## DEV DOCUMENTATION
 
+The application is deployed at https://swe-test-alantoris-317986988721.southamerica-east1.run.app ready to be consumed.
 
 To deploy the API locally, you must have Docker and Docker Compose installed. If you don't, you can follow the instructions at https://docs.docker.com/compose/install/
 
@@ -108,8 +109,8 @@ docker-compose up
 
 Our REST API for user management is available under the `/users` endpoint. The supported operations are as follows:
 
-- **GET** `/users/`
-  Retrieves the full list of users.
+- **GET** `/users/?page=2&size=2`
+  Retrieves the paginated list of users.
 
 - **GET** `/users/{uuid}/`
   Retrieves a specific user by their UUID.
@@ -126,10 +127,11 @@ Our REST API for user management is available under the `/users` endpoint. The s
 - **DELETE** `/users/{uuid}/`
   Deletes a specific user.
 
-We can find within the postman folder, at the root of the project, a series of examples to be able to use this API against our localhost.
+We can find within the postman folder, at the root of the project, a series of examples to be able to use this API against our deployed API.
+We just need to define an environment variable inside postman called HOST with the value of https://swe-test-alantoris-317986988721.southamerica-east1.run.app
 
 For a more detailed description of endpoints, parameters, request and response formats, please refer to the full documentation at:
 
 ```
-/docs
+https://swe-test-alantoris-317986988721.southamerica-east1.run.app/docs
 ```

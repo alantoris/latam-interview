@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "10e5f17f-ab37-499a-a8d1-539a9266e8bd",
+		"_postman_id": "5287e8b4-68e3-41f3-a0c3-c5bb6d70cb80",
 		"name": "LatamSWE",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "31763663"
@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"alantoris4\",\n    \"email\": \"alan.toris5@gmail.com\",\n    \"first_name\": \"Alan\",\n    \"last_name\": \"Toris\",\n    \"role\": \"user\"\n\n\n}",
+					"raw": "{\n    \"username\": \"alantoris13\",\n    \"email\": \"alan.toris13@gmail.com\",\n    \"first_name\": \"Alan\",\n    \"last_name\": \"Toris\",\n    \"role\": \"user\"\n\n\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -21,12 +21,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8000/users/",
-					"protocol": "http",
+					"raw": "{{HOST}}/users/",
 					"host": [
-						"localhost"
+						"{{HOST}}"
 					],
-					"port": "8000",
 					"path": [
 						"users",
 						""
@@ -41,14 +39,39 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/users",
-					"protocol": "http",
+					"raw": "{{HOST}}/users",
 					"host": [
-						"localhost"
+						"{{HOST}}"
 					],
-					"port": "8000",
 					"path": [
 						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get users list next page",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/users?page=2&size=2",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "size",
+							"value": "2"
+						}
 					]
 				}
 			},
@@ -69,16 +92,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8000/users/421918d5-0968-4301-8ba3-e4ac97a587be/",
-					"protocol": "http",
+					"raw": "{{HOST}}/users/4f9a94cb-cc25-49b4-abed-8ac05e5c25c7",
 					"host": [
-						"localhost"
+						"{{HOST}}"
 					],
-					"port": "8000",
 					"path": [
 						"users",
-						"421918d5-0968-4301-8ba3-e4ac97a587be",
-						""
+						"4f9a94cb-cc25-49b4-abed-8ac05e5c25c7"
 					]
 				}
 			},
@@ -99,16 +119,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8000/users/421918d5-0968-4301-8ba3-e4ac97a587be/",
-					"protocol": "http",
+					"raw": "{{HOST}}/users/4f9a94cb-cc25-49b4-abed-8ac05e5c25c7",
 					"host": [
-						"localhost"
+						"{{HOST}}"
 					],
-					"port": "8000",
 					"path": [
 						"users",
-						"421918d5-0968-4301-8ba3-e4ac97a587be",
-						""
+						"4f9a94cb-cc25-49b4-abed-8ac05e5c25c7"
 					]
 				}
 			},
@@ -120,16 +137,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/users/421918d5-0968-4301-8ba3-e4ac97a587be/",
-					"protocol": "http",
+					"raw": "{{HOST}}/users/4f9a94cb-cc25-49b4-abed-8ac05e5c25c7",
 					"host": [
-						"localhost"
+						"{{HOST}}"
 					],
-					"port": "8000",
 					"path": [
 						"users",
-						"421918d5-0968-4301-8ba3-e4ac97a587be",
-						""
+						"4f9a94cb-cc25-49b4-abed-8ac05e5c25c7"
 					]
 				}
 			},
@@ -141,16 +155,13 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/users/421918d5-0968-4301-8ba3-e4ac97a587be/",
-					"protocol": "http",
+					"raw": "{{HOST}}/users/96794ebe-bb45-4883-acb2-aad50e0e6229",
 					"host": [
-						"localhost"
+						"{{HOST}}"
 					],
-					"port": "8000",
 					"path": [
 						"users",
-						"421918d5-0968-4301-8ba3-e4ac97a587be",
-						""
+						"96794ebe-bb45-4883-acb2-aad50e0e6229"
 					]
 				}
 			},
