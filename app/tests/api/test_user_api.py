@@ -108,20 +108,29 @@ class TestUserCreateAPI:
 class TestUserListAPI:
     def test_list_users_endpoint(self, client):
         # Given and when
-        response = client.get("/users/")
-
-        # Then
-        assert response.status_code == 200
-        assert isinstance(response.json(), list)
-
-    def test_list_users_endpoint_with_data(self, client, multiple_users):
-        # Given and when
-        response = client.get("/users/")
+        response = client.get("/users/?page=1&size=10")
 
         # Then
         assert response.status_code == 200
         data = response.json()
-        assert len(data) == 5
+        assert isinstance(data, dict)
+        assert data["total"] == 0
+        assert data["items"] == []
+        assert data["page"] == 1
+        assert data["size"] == 10
+
+    def test_list_users_endpoint_with_data(self, client, multiple_users):
+        # Given and when
+        response = client.get("/users/?page=1&size=10")
+
+        # Then
+        assert response.status_code == 200
+        data = response.json()
+        assert isinstance(data, dict)
+        assert data["total"] == 5
+        assert len(data["items"]) == 5
+        assert data["page"] == 1
+        assert data["size"] == 10
 
 
 class TestUserRetrieveAPI:
