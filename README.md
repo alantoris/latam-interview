@@ -109,8 +109,8 @@ docker-compose up
 
 Our REST API for user management is available under the `/users` endpoint. The supported operations are as follows:
 
-- **GET** `/users/`
-  Retrieves the full list of users.
+- **GET** `/users/?page=2&size=2`
+  Retrieves the paginated list of users.
 
 - **GET** `/users/{uuid}/`
   Retrieves a specific user by their UUID.
@@ -133,5 +133,5 @@ We just need to define an environment variable inside postman called HOST with t
 For a more detailed description of endpoints, parameters, request and response formats, please refer to the full documentation at:
 
 ```
-/docs
+https://swe-test-alantoris-317986988721.southamerica-east1.run.app/docs
 ```

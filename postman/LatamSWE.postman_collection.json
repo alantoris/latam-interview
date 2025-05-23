@@ -51,6 +51,33 @@
 			"response": []
 		},
 		{
+			"name": "Get users list next page",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/users?page=2&size=2",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "size",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Partial update user",
 			"request": {
 				"method": "PATCH",
