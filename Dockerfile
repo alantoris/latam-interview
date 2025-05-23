@@ -15,8 +15,4 @@ COPY . .
 # Expose the expected port
 EXPOSE 8080
 
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-
-# Usamos el script como comando de arranque
-CMD ["/start.sh"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
